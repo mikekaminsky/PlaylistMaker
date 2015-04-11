@@ -1,7 +1,8 @@
 import re
 
 sentence = "tHis is, A. very long troubling senTence with a shitload of words"
-#sentence = "tHis is, A. very long"
+#sentence = "tHis is, A. very long test"
+#sentence = "tHis is"
 
 def clean_sentence(sentence):
   return re.sub('[^a-z ]', '', sentence.lower())
@@ -11,7 +12,6 @@ sentence_clean = clean_sentence(sentence)
 sentence_split = sentence_clean.split()
 
 def query_api(string):
-  print "searching for " + string
   if string == "a very long":
     return "www.google.com"
   if string == "troubling sentence":
@@ -20,21 +20,25 @@ def query_api(string):
     return "www.google.com"
   if string == "this":
     return "www.google.com"
+  if string == "is":
+    return "www.google.com"
   else:
    return False
 
-def search_sentence(remaining, clefts, results):
+
+def search_sentence(remaining, clefts):
+
   #Base Case
   if clefts == 1 and len(remaining) == 1:
     wedge = ' '.join(remaining)
     result = query_api(wedge)
     if result:
-      results.append((wedge, result))
+      return list((wedge, result))
     else:
-      results.append((wedge, "No song :("))
+      return list((wedge, "No song :("))
 
-  #Recursion
-  elif clefts > 1 or len(remaining) > 1:
+  #Recursion piece
+  if clefts > 1 or len(remaining) > 1:
     if len(remaining)>clefts:
       found_flag = 0
       for cleft in range (0, len(remaining) - (clefts - 1)):
@@ -45,33 +49,32 @@ def search_sentence(remaining, clefts, results):
           remaining_left = remaining[0:cleft]
           remaining_right = remaining[cleft+clefts:]
 
-          results.append((wedge, result))
+          middle = list((wedge, result))
+          left = search_sentence(remaining_left, clefts-1)
+          right = search_sentence(remaining_right, clefts)
 
-          #Split the sentence along the wedge, and continue searching
-          search_sentence(remaining_left, clefts-1, results)
-          search_sentence(remaining_right, clefts, results)
+          if left and right:
+            return left + middle + right
+          if left:
+            return left + middle
+          if right:
+            return middle + right
+
+          #After we search again, we have to break out of the loop
           break
-      if found_flag == 0 and clefts > 0:
-        search_sentence(remaining, clefts - 1, results)
+
+      # If you don't find anything, start back at the beginning with a smaller search size
+      if found_flag == 0 and clefts > 0: 
+        return search_sentence(remaining, clefts - 1)
     if len(remaining)==clefts:
-        wedge = ' '.join(remaining)
-        result = query_api(wedge)
-        if result:
-          results.append((wedge, result))
-        else:
-          search_sentence(remaining, clefts-1, results)
+      wedge = ' '.join(remaining)
+      result = query_api(wedge)
+      if result:
+        return list((wedge, result))
+      else:
+        return search_sentence(remaining, clefts-1)
     if len(remaining) < clefts:
-      search_sentence(remaining, clefts-1, results)
-  return results
+      return search_sentence(remaining, clefts-1)
 
-starting_clefts = 3
-results = list()
-res = search_sentence(sentence_split, starting_clefts, results)
-
-for tupes in res:
-    print tupes[0] + ' URL: ' + tupes[1]
-
-
-
-
-
+starting_clefts = 1
+res = search_sentence(sentence_split, starting_clefts)
