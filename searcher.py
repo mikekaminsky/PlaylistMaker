@@ -26,7 +26,6 @@ def query_api(string):
   else:
    return False
 
-
 def search_sentence(remaining, clefts):
 
   if len(remaining) == 0 or clefts == 0:
@@ -79,7 +78,7 @@ def search_sentence(remaining, clefts):
           break
 
       # If you don't find anything, start back at the beginning with a smaller search size
-      if found_flag == 0 and clefts > 0: 
+      if found_flag == 0 and clefts > 1:
         return search_sentence(remaining, clefts - 1)
 
     if len(remaining)==clefts:
@@ -92,5 +91,5 @@ def search_sentence(remaining, clefts):
     if len(remaining) < clefts:
       return search_sentence(remaining, clefts-1)
 
-starting_clefts = 5
+starting_clefts = 2
 res = search_sentence(sentence_split, starting_clefts)
