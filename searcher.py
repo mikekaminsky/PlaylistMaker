@@ -12,21 +12,25 @@ sentence_clean = clean_sentence(sentence)
 sentence_split = sentence_clean.split()
 
 def query_api(string):
+  print "searching " + string
   if string == "a very long":
     return "www.google.com"
   if string == "troubling sentence":
-    return "www.google.com"
+    return "www.rhymeremix.com"
   if string == "a shitload of":
-    return "www.google.com"
+    return "www.example.com"
   if string == "this":
-    return "www.google.com"
+    return "www.yahoo.com"
   if string == "is":
-    return "www.google.com"
+    return "www.myspace.com"
   else:
    return False
 
 
 def search_sentence(remaining, clefts):
+
+  if len(remaining) == 0 or clefts == 0:
+    return []
 
   #Base Case
   if clefts == 1 and len(remaining) == 1:
@@ -36,6 +40,17 @@ def search_sentence(remaining, clefts):
       return list((wedge, result))
     else:
       return list((wedge, "No song :("))
+
+  if clefts == 1 and len(remaining) > 1: 
+    output = []
+    for cleft in range (0, len(remaining)):
+      wedge = remaining[cleft]
+      result = query_api(wedge)
+      if result:
+        output.append((wedge, result))
+      else:
+        output.append((wedge, "No song :("))
+    return output
 
   #Recursion piece
   if clefts > 1 or len(remaining) > 1:
@@ -66,6 +81,7 @@ def search_sentence(remaining, clefts):
       # If you don't find anything, start back at the beginning with a smaller search size
       if found_flag == 0 and clefts > 0: 
         return search_sentence(remaining, clefts - 1)
+
     if len(remaining)==clefts:
       wedge = ' '.join(remaining)
       result = query_api(wedge)
@@ -76,5 +92,5 @@ def search_sentence(remaining, clefts):
     if len(remaining) < clefts:
       return search_sentence(remaining, clefts-1)
 
-starting_clefts = 1
+starting_clefts = 5
 res = search_sentence(sentence_split, starting_clefts)
