@@ -37,9 +37,9 @@ Imagine the following block of text:
 
 which is then parsed into the following sentence-lists:
 
-1. ["do", "i", "contradict", "myself"]
-2. ["very", "well", "then", "i", "contradict", "myself"]
-3. ["i", "am", "large", "i", "contain", "multitudes"]
+1. `["do", "i", "contradict", "myself"]`
+2. `["very", "well", "then", "i", "contradict", "myself"]`
+3. `["i", "am", "large", "i", "contain", "multitudes"]`
 
 Focusing on the first sentence only, we'll walk through what the algorithm is doing. The same algorithm is then applied to sentences 2 and 3 in turn. The search algortihm starts by searching for a group of words equal to the sentence length: 
 
@@ -68,16 +68,16 @@ The algorithm then _recursively_ repeats the search on the left (decrementing th
 
 In the worst-case scenario (no matches >1 word), the algorithm will complete with n(n+1)/2 searches where n is the number of words in the sentence:
 
-1. "do i contradict myself"
-2. "do i contradict"
-3. "i contradict myself"
-4. "do i"
-5. "i contradict"
-6. "contradict myself"
-7. "do"
-8. "i"
-9. "contradict"
-10. "myself"
+1. `do i contradict myself`
+2. `do i contradict`
+3. `i contradict myself`
+4. `do i`
+5. `i contradict`
+6. `contradict myself`
+7. `do`
+8. `i`
+9. `contradict`
+10. `myself`
 
 I _think_ this might be an optimal algorithm. Notice how it handles the following sentence
 
