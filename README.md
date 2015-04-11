@@ -7,6 +7,6 @@
 
 
 ###To-Do:
-* [ ] Write tests
+* [x] Write tests
 * [ ] Refactor
 * [ ] Hook into real API
