@@ -3,7 +3,12 @@
 ###To-Do:
 * [x] Write tests
 * [x] Refactor
-* [ ] Hook into real API
+* [x] Hook into real API
+* [ ] Convert the query_api function into an object so we can have an 'already_queried' list
+* [ ] Don't repeat searches where "None" was found!!!
+* [ ] Pass argument to either:
+  * [ ] Maximize song diversity (i.e., try not to repeat songs)
+  * [ ] Maximize efficiency (i.e., use the results of previous queries)
 
 ##Installation instructions
 
@@ -62,7 +67,7 @@ Now, what if we find a song called 'I Contradict'? Here, the algorithm splits th
 
 >  found: `i contradict`
 
->  right: `["mysyelf"]`
+>  right: `["myself"]`
 
 The algorithm then _recursively_ repeats the search on the left (decrementing the search group length) and the right (without decrementing).
 
