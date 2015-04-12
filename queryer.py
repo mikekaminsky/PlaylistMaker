@@ -8,10 +8,14 @@ class queryer(object):
   """
   Class to serve as a container for the API query box
   """
-  def __init__(self, uniquesongs = False):
+  def __init__(self, 
+      uniquesongs = False,
+      maxpage = 10
+      ):
     print "queryer object created"
     self.searches = {}
     self.uniquesongs = uniquesongs
+    self.maxpage = maxpage
 
   def __updater(self, query, result):
     if self.uniquesongs == True:
@@ -26,7 +30,7 @@ class queryer(object):
 
     return result
 
-  def query_api(self, query, maxpage = 10):
+  def query_api(self, query):
 
     old_results = []
 
@@ -37,7 +41,7 @@ class queryer(object):
         return self.__updater(query, self.searches[query])
 
     #Loop for paginagtion
-    for i in range(0, maxpage):
+    for i in range(0, self.maxpage):
       url = 'https://api.spotify.com/v1/search?'
       url = url + 'q=track:%22' + query.replace(" ","+") + '%22&type=track&limit=50&offset='+str(i*50)
       response = requests.get(url)

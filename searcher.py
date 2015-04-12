@@ -13,7 +13,9 @@ def clean_text(block):
 def clean_sentence(sentence):
   return re.sub('[^a-z ]', '', sentence.lower().strip(' ')).split()
 
-def search_sentence(remaining, queryer, clefts = 10):
+def search_sentence(remaining, queryer, clefts = 100):
+
+  clefts = min(remaining,clefts)
 
   def get_url(query = '', queryer = queryer):
     track = queryer.query_api(query)
