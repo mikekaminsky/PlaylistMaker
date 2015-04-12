@@ -1,5 +1,6 @@
 import json
 import requests
+from sets import Set
 
 stopwords = set(["a", "the", "in", "of", "or", "and", "but", "for", "at", "which", "on", "we", "i", "by", "if", "is", "was", "so", "nor", "into"])
 
@@ -7,20 +8,33 @@ class queryer(object):
   """
   Class to serve as a container for the API query box
   """
-  def __init__(self):
+  def __init__(self, uniquesongs = False):
     print "queryer object created"
     self.searches = {}
+    self.uniquesongs = uniquesongs
 
   def __updater(self, query, result):
-    self.searches[query] = result
+    if self.uniquesongs == True:
+      if query in self.searches:
+        oldresult = self.searches[query]
+        oldresult.update(result)
+        self.searches[query] = oldresult
+      else:
+        self.searches[query] = Set([result])
+    else:
+      self.searches[query] = result
+
     return result
 
   def query_api(self, query, maxpage = 10):
+
+    old_results = []
+
     if query in stopwords:
       return self.__updater(query, "None")
-    if query in self.searches:
-      if self.searches[query] == "None":
-        return self.__updater(query, "None")
+
+    if query in self.searches and self.uniquesongs == False:
+        return self.__updater(query, self.searches[query])
 
     #Loop for paginagtion
     for i in range(0, maxpage):
@@ -42,6 +56,32 @@ class queryer(object):
         spotify_url = option['external_urls']['spotify']
         assert 'track' in spotify_url
         if track_name.lower() == query:
-          return self.__updater(query, spotify_url)
-          break
+          if self.uniquesongs == True:
+            if query in self.searches:
+              if spotify_url not in self.searches[query]:
+                return self.__updater(query, spotify_url)
+                break
+            else:
+                return self.__updater(query, spotify_url)
+                break
+          if self.uniquesongs == False:
+            return self.__updater(query, spotify_url)
+            break
     return self.__updater(query,"None")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

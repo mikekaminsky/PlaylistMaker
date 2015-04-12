@@ -7,8 +7,9 @@
 * [x] Convert the query_api function into an object so we can have an 'already_queried' list
 * [x] Don't repeat searches where "None" was found!!!
 * [ ] Pass argument to either:
-  * [ ] Maximize song diversity (i.e., try not to repeat songs)
-  * [ ] Maximize efficiency (i.e., use the results of previous queries)
+  * [x] Maximize song diversity (i.e., try not to repeat songs)
+  * [x] Maximize efficiency (i.e., use the results of previous queries)
+* [ ] Wrap for CLT. Pipe in a text file and pipe out the results
 
 ##Installation instructions
 

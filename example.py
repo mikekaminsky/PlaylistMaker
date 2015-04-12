@@ -1,5 +1,5 @@
 from searcher import *
-from query_api import *
+from queryer import *
 
 
 
@@ -14,16 +14,16 @@ Into the valley of Death
 Rode the six hundred.
 """
 
-#results = []
-#for sentence in clean_text(block):
-    #result = search_sentence(clean_sentence(sentence))
-    #results.append(result)
+q = queryer(uniquesongs = True)
+results = []
+for sentence in clean_text(block):
+    result = search_sentence(clean_sentence(sentence), q, 10)
+    results.append(result)
 
-#for result in results:
-    #for word in result:
-        #print word
+for result in results:
+    for word in result:
+        print word
 
-q = queryer()
-cleaned = clean_text(block)
-test = clean_sentence(cleaned[0])
-res = search_sentence(test, q, 10)
+#cleaned = clean_text(block)
+#test = clean_sentence(cleaned[0])
+#res = search_sentence(test, q, 10)
