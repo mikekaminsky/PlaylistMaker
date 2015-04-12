@@ -25,5 +25,5 @@ Rode the six hundred.
 
 q = queryer()
 cleaned = clean_text(block)
-test = clean_sentence(cleaned[3])
+test = clean_sentence(cleaned[0])
 res = search_sentence(test, q, 10)

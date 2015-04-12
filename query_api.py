@@ -18,12 +18,14 @@ class queryer(object):
   def query_api(self, query, maxpage = 10):
     if query in stopwords:
       return self.__updater(query, "None")
+    if query in self.searches:
+      if self.searches[query] == "None":
+        return self.__updater(query, "None")
+
     #Loop for paginagtion
-    for i in range(0,maxpage):
-      print i
+    for i in range(0, maxpage):
       url = 'https://api.spotify.com/v1/search?'
       url = url + 'q=track:%22' + query.replace(" ","+") + '%22&type=track&limit=50&offset='+str(i*50)
-      print url
       response = requests.get(url)
       if response.status_code != 200:
         print "Bad status code!" + response.status_code
@@ -32,7 +34,6 @@ class queryer(object):
       # If we run out results, break
       if len(options) < 1:
         break
-      print "Number of options:" + str(len(options))
       # See if any of the nams *actually* match
       for option in options:
         track_name = option['name']

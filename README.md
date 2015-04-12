@@ -5,7 +5,7 @@
 * [x] Refactor
 * [x] Hook into real API
 * [x] Convert the query_api function into an object so we can have an 'already_queried' list
-* [ ] Don't repeat searches where "None" was found!!!
+* [x] Don't repeat searches where "None" was found!!!
 * [ ] Pass argument to either:
   * [ ] Maximize song diversity (i.e., try not to repeat songs)
   * [ ] Maximize efficiency (i.e., use the results of previous queries)
