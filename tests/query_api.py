@@ -1,7 +1,10 @@
 execfile("query_api.py")
 
+
+q = queryer()
+
 def test_stopword():
-    assert query_api("a") == "None"
+    assert q.query_api("a") == "None"
 
 def test_empty():
-    assert query_api("") == "None"
+    assert q.query_api("") == "None"

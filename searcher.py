@@ -13,15 +13,14 @@ def clean_text(block):
 def clean_sentence(sentence):
   return re.sub('[^a-z ]', '', sentence.lower().strip(' ')).split()
 
+def search_sentence(remaining, queryer, clefts = 10):
 
-def get_url(query = ''):
-  track = query_api(query)
-  if track != "None":
-    return track[3]
-  else:
-    return False
-
-def search_sentence(remaining, clefts = 10, get_url = get_url):
+  def get_url(query = '', queryer = queryer):
+    track = queryer.query_api(query)
+    if track != "None":
+      return track
+    else:
+      return False
 
   #Clefts must be less than or equal to number of remaining items
   clefts = min(clefts,len(remaining))
@@ -63,9 +62,9 @@ def search_sentence(remaining, clefts = 10, get_url = get_url):
 
           middle = [(wedge, result)]
           #Decrement the cleft size for left search
-          left = search_sentence(remaining_left, clefts-1, get_url)
+          left = search_sentence(remaining_left, queryer, clefts-1)
           #Keep searching to the right
-          right = search_sentence(remaining_right, clefts, get_url)
+          right = search_sentence(remaining_right, queryer, clefts)
 
           if left and right:
             return left + middle + right
@@ -76,7 +75,7 @@ def search_sentence(remaining, clefts = 10, get_url = get_url):
 
       # If you don't find anything, start back at the beginning with a smaller search size
       if found_flag == 0 and clefts > 1:
-        return search_sentence(remaining, clefts - 1, get_url)
+        return search_sentence(remaining, queryer, clefts - 1)
 
     if len(remaining)==clefts:
       wedge = ' '.join(remaining)
@@ -84,4 +83,4 @@ def search_sentence(remaining, clefts = 10, get_url = get_url):
       if result:
         return [(wedge, result)]
       else:
-        return search_sentence(remaining, clefts-1, get_url)
+        return search_sentence(remaining, queryer, clefts-1)
