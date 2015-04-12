@@ -1,5 +1,5 @@
 import re
-from query_api import *
+from queryer import *
 
 def clean_text(block):
   # Split on sentence-ending punctuation and carriage-returns
