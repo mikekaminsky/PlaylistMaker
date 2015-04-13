@@ -4,13 +4,42 @@ Inspired by the [Spotify Poetry tumblr](http://spotifypoetry.tumblr.com/), this 
 ##Installation instructions
 
     $ git clone https://github.com/mikekaminsky/PlaylistMaker
+    $ cd PlaylistMaker
     $ python setup.py install
 
-##Example
+##Examples
+
+From the command line:
 
     $ PlaylistMaker "The rain falls heavy on the plains in spain"
 
+From Python:
+
+    $ Python
+    >>> from PlaylistMaker import playlistmaker as pm
+    >>> text = """
+    Because I could not stop for Death,
+    He kindly stopped for me;
+    The carriage held but just ourselves
+    And Immortality.
+    """
+    print pm.playlistmaker(
+                    textforplaylist = text, 
+                    requireuniquesongs = True,
+                    maxwordsearchlength = 10,
+                    maxpagesearch = 20
+                    )
+    
+Arguments:
+
+  * `textforplaylist`: String. The block of text you want to search for.
+  * `requireuniquesongs`: Boolean. Default: `True`. Requires that songs are not repeated.
+  * `maxwordsearchlength`: Integer. Default: `10`. The maximum number of consecutive words that will be searched in the recursive algorithm. Lower numbers will return results faster, but no longer guarantee the globally optimal solution.
+  * `maxpagesearch`: Integer. Default: `10`. The number of 50-result pages to search through using the Spotify API. This is the slowest part of the search, so setting this value to a lower number guarantees a result much faster, but you might miss a valid result you searched for depending on the order the API's results are returned.
+
 ##Discussion
+
+###The Search Algorithm
 
 In order to be able to work efficiently with any block of text, this algorithm first splits text chunks up into 'sentences' using the following characters as delimiters:
 
@@ -22,8 +51,7 @@ In order to be able to work efficiently with any block of text, this algorithm f
   * `:`
   * `\n` (carriage returns) ` `
   
-
-Once the block of text is split into sentences, the text is lowercased and stripped of non-lating characters (including numerals!) and leading and trailing whitespace.
+Once the block of text is split into sentences, the text is lowercased and stripped of non-latin characters (including numerals!) and leading and trailing whitespace. Note: this is a feature to avoid having song titles that split across 'thoughts' in a sentence/poem. Removing this feature would be trivial, although it would result in longer search times.
 
 The search algorithm to find a match is performed at the sentence level for comprehension reasons. This way the titles of the songs that are found don't split across different 'thoughts'.
 
@@ -79,21 +107,31 @@ In the worst-case scenario (no matches >1 word), the algorithm will complete wit
 9. `contradict`
 10. `myself`
 
-I _think_ this might be an optimal algorithm. Notice how it handles the following sentence
 
-    ["two", "roads", "diverged", "in", "a", "yellow", "wood"]
+####Inefficiencies
 
-where only the following song titles are in our database:
+Because this algorithm is greedy, there are some cases in which this algorithm will **not** find the globally optimal solution. For example, if we have the sentence:
 
-1. two roads
-2. roads diverged
-3. in a 
-4. yellow wood
+> Roses are red violets are blue
 
-The algorithm matches
-    `["two roads", "in a", "yellow wood"]`
+and our database contains the following song titles:
+* roses are red violets 
+* red violets are blue
+* roses are
 
-###To-Do:
+The optimal solution is "roses are" + "red violets are blue". However, this algorithm will identify _only_ the song title "roses are red violets". An algorithm that could solve this problem might search for all two-song combinations then all three-song combinations, then all 4-song combinations, stopping as soon as it finds a combination that is valid.
+
+###The API Query
+
+Because the Spotify API search feature does not allow you to specify an exact title match, the following list of stopwords are not searched if they are alone:
+
+    stopwords = set(["a", "the", "in", "of", "or", "and", "but", "for", "at", "which", "on", "we", "i", "by", "if", "is", "was", "so", "nor", "into"])
+
+The querying algorithm keeps track of every succesful search within a given block of text. If you do not require that the results contain unique songs, the algorithm will not query the API for the same search that's already been completed. In the case where you do require unique songs, the algorithm will page through search results until it finds an exact match that hasn't already been returned for that query.
+
+This logic/implementation could easily be extended to caching for a webapp, or even saving frequent ngrams with their results for efficiency.
+
+##To-Do:
 * [x] Write tests
 * [x] Refactor
 * [x] Hook into real API
