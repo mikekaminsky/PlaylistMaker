@@ -1,22 +1,16 @@
 # PlaylistMaker
-
-###To-Do:
-* [x] Write tests
-* [x] Refactor
-* [x] Hook into real API
-* [x] Convert the query_api function into an object so we can have an 'already_queried' list
-* [x] Don't repeat searches where "None" was found!!!
-* [ ] Pass argument to either:
-  * [x] Maximize song diversity (i.e., try not to repeat songs)
-  * [x] Maximize efficiency (i.e., use the results of previous queries)
-* [ ] Wrap for CLT. Pipe in a text file and pipe out the results
+Inspired by the [Spotify Poetry tumblr](http://spotifypoetry.tumblr.com/), this tool takes a block of text as input and returns a list of songs in ordered tuples `(title, url)` where the title of the song matches the text of the input and the url is a link to the spotify track with that title.
 
 ##Installation instructions
 
+    $ git clone https://github.com/mikekaminsky/PlaylistMaker
+    $ python setup.py install
+
 ##Example
 
+    $ PlaylistMaker "The rain falls heavy on the plains in spain"
+
 ##Discussion
-Inspired by the [Spotify Poetry tumblr](http://spotifypoetry.tumblr.com/), this tool takes a block of text as input and returns a list of songs in ordered tuples `(title, url)` where the title of the song matches the text of the input and the url is a link to the spotify track with that title.
 
 In order to be able to work efficiently with any block of text, this algorithm first splits text chunks up into 'sentences' using the following characters as delimiters:
 
@@ -29,7 +23,7 @@ In order to be able to work efficiently with any block of text, this algorithm f
   * `\n` (carriage returns) ` `
   
 
-Once the block of text is split into sentences, the text is lowercased and stripped of non-characters (including numerals!) and leading and trailing whitespace.
+Once the block of text is split into sentences, the text is lowercased and stripped of non-lating characters (including numerals!) and leading and trailing whitespace.
 
 The search algorithm to find a match is performed at the sentence level for comprehension reasons. This way the titles of the songs that are found don't split across different 'thoughts'.
 
@@ -98,3 +92,16 @@ where only the following song titles are in our database:
 
 The algorithm matches
     `["two roads", "in a", "yellow wood"]`
+
+###To-Do:
+* [x] Write tests
+* [x] Refactor
+* [x] Hook into real API
+* [x] Convert the query_api function into an object so we can have an 'already_queried' list
+* [x] Don't repeat searches where "None" was found!!!
+* [x] Pass argument to either:
+  * [x] Maximize song diversity (i.e., try not to repeat songs)
+  * [x] Maximize efficiency (i.e., use the results of previous queries)
+* [x] Wrap for CLT
+* [ ] Improve test coverage
+* [ ] Handle non-latin characters?
