@@ -12,7 +12,7 @@ class queryer(object):
       uniquesongs = False,
       maxpage = 10
       ):
-    print "queryer object created"
+    print "Searching..."
     self.searches = {}
     self.uniquesongs = uniquesongs
     self.maxpage = maxpage
