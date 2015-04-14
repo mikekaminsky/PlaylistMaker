@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from playlistmaker import *
 
 block = """
@@ -11,4 +12,9 @@ Into the valley of Death
 Rode the six hundred.
 """
 
+
 print playlistmaker(block)
+
+
+block2 = "Du får göra som du vill"
+print playlistmaker(block2)

@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import re
+import string
 from queryer import *
 
 def clean_text(block):
@@ -11,7 +13,7 @@ def clean_text(block):
   return splits
 
 def clean_sentence(sentence):
-  return re.sub('[^a-z ]', '', sentence.lower().strip(' ')).split()
+  return ' '.join(word.strip(string.punctuation).lower() for word in sentence.split()).split()
 
 def search_sentence(remaining, queryer, clefts = 100):
 

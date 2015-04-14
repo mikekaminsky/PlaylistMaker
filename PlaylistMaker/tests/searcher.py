@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 execfile("searcher.py")
 
 block = """
@@ -32,9 +33,13 @@ class testqueryer(object):
 q = testqueryer()
 
 
-def test_clean_sentence():
+def test_clean_sentence_strip():
     print(sentence)
     assert clean_sentence(sentence) == ["four", "score", "and", "seven"]
+
+def test_clean_sentence_utf8():
+    print(sentence)
+    assert clean_sentence('Du får göra som du vill') == ['du', 'får', 'göra', 'som', 'du', 'vill']
 
 def test_search_sentence_1():
     results = search_sentence(sentence_split, q, 1)

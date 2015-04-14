@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import requests
 from sets import Set
@@ -59,33 +60,16 @@ class queryer(object):
         artist_name = option['artists'][0]['name']
         spotify_url = option['external_urls']['spotify']
         assert 'track' in spotify_url
-        if track_name.lower() == query:
+        if track_name.lower() == query.decode('utf-8'):
           if self.uniquesongs == True:
             if query in self.searches:
               if spotify_url not in self.searches[query]:
-                return self.__updater(query, spotify_url)
+                return self.__updater(track_name, spotify_url)
                 break
             else:
-                return self.__updater(query, spotify_url)
+                return self.__updater(track_name, spotify_url)
                 break
           if self.uniquesongs == False:
-            return self.__updater(query, spotify_url)
+            return self.__updater(track_name, spotify_url)
             break
     return self.__updater(query,"None")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

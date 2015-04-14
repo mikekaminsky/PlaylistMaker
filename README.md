@@ -51,7 +51,7 @@ In order to be able to work efficiently with any block of text, this algorithm f
   * `:`
   * `\n` (carriage returns) ` `
   
-Once the block of text is split into sentences, the text is lowercased and stripped of non-latin characters (including numerals!) and leading and trailing whitespace. Note: this is a feature to avoid having song titles that split across 'thoughts' in a sentence/poem. Removing this feature would be trivial, although it would result in longer search times.
+Once the block of text is split into sentences, the text is lowercased and stripped of punctuation and leading and trailing whitespace. UTF-8 Characters are allowed. Note: this is a feature to avoid having song titles that split across 'thoughts' in a sentence/poem. Removing this feature would be trivial, although it would result in longer search times.
 
 The search algorithm to find a match is performed at the sentence level for comprehension reasons. This way the titles of the songs that are found don't split across different 'thoughts'.
 
@@ -141,5 +141,6 @@ This logic/implementation could easily be extended to caching for a webapp, or e
   * [x] Maximize song diversity (i.e., try not to repeat songs)
   * [x] Maximize efficiency (i.e., use the results of previous queries)
 * [x] Wrap for CLT
-* [ ] Improve test coverage
-* [ ] Handle non-latin characters?
+* [x] Improve test coverage
+* [x] Handle non-latin characters?
+* [ ] Return properly capitalized track titles?
