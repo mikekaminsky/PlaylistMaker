@@ -7,6 +7,14 @@ Inspired by the [Spotify Poetry tumblr](http://spotifypoetry.tumblr.com/), this 
     $ cd PlaylistMaker
     $ python setup.py install
 
+If you get an insecure platform warning
+
+    InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause certain SSL connections to fail.
+
+You may need to install pyopenssl:
+
+    pip install pyopenssl ndg-httpsclient pyasn1
+
 ##Examples
 
 From the command line:
@@ -49,7 +57,7 @@ In order to be able to work efficiently with any block of text, this algorithm f
   * `(` or `)`
   * `;`
   * `:`
-  * `\n` (carriage returns) ` `
+  * `\n`  (carriage returns) 
   
 Once the block of text is split into sentences, the text is lowercased and stripped of punctuation and leading and trailing whitespace. UTF-8 Characters are allowed. Note: this is a feature to avoid having song titles that split across 'thoughts' in a sentence/poem. Removing this feature would be trivial, although it would result in longer search times.
 
@@ -92,7 +100,7 @@ Now, what if we find a song called 'I Contradict'? Here, the algorithm splits th
 
 >  right: `["myself"]`
 
-The algorithm then _recursively_ repeats the search on the left (decrementing the search group length) and the right (without decrementing).
+The algorithm then recursively repeats the search on the left (decrementing the number of words in a single search) and the right (without decrementing).
 
 In the worst-case scenario (no matches >1 word), the algorithm will complete with n(n+1)/2 searches where n is the number of words in the sentence:
 
@@ -107,8 +115,7 @@ In the worst-case scenario (no matches >1 word), the algorithm will complete wit
 9. `contradict`
 10. `myself`
 
-
-####Inefficiencies
+####Sub-Optimality
 
 Because this algorithm is greedy, there are some cases in which this algorithm will **not** find the globally optimal solution. For example, if we have the sentence:
 
@@ -143,4 +150,4 @@ This logic/implementation could easily be extended to caching for a webapp, or e
 * [x] Wrap for CLT
 * [x] Improve test coverage
 * [x] Handle non-latin characters?
-* [ ] Return properly capitalized track titles?
+* [x] Return properly capitalized track titles?

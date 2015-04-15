@@ -13,14 +13,14 @@ def clean_text(block):
   return splits
 
 def clean_sentence(sentence):
-  return ' '.join(word.strip(string.punctuation).lower() for word in sentence.split()).split()
+  return ' '.join(word.strip(string.punctuation) for word in sentence.split()).split()
 
 def search_sentence(remaining, queryer, clefts = 100):
 
   clefts = min(remaining,clefts)
 
   def get_url(query = '', queryer = queryer):
-    track = queryer.query_api(query)
+    track = queryer.query_api(query.lower())
     if track != "None":
       return track
     else:
