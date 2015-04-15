@@ -15,7 +15,7 @@ You may need to install pyopenssl:
 
     pip install pyopenssl ndg-httpsclient pyasn1
 
-##Examples
+##Usage Examples
 
 From the command line:
 
